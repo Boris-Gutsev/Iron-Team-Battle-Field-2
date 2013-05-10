@@ -1,0 +1,7 @@
+D:\e-books\Telerik\2012_2013\KPK\TeemWork\Iron-Team-Battle-Field-2\BattleField\BattleField\bin\Debug\BattleField.exe.config
+D:\e-books\Telerik\2012_2013\KPK\TeemWork\Iron-Team-Battle-Field-2\BattleField\bin\Debug\BattleField.exe.config
+D:\e-books\Telerik\2012_2013\KPK\TeemWork\Iron-Team-Battle-Field-2\BattleField\bin\Debug\BattleField.exe
+D:\e-books\Telerik\2012_2013\KPK\TeemWork\Iron-Team-Battle-Field-2\BattleField\bin\Debug\BattleField.pdb
+D:\e-books\Telerik\2012_2013\KPK\TeemWork\Iron-Team-Battle-Field-2\BattleField\obj\Debug\BattleField.csprojResolveAssemblyReference.cache
+D:\e-books\Telerik\2012_2013\KPK\TeemWork\Iron-Team-Battle-Field-2\BattleField\obj\Debug\BattleField.exe
+D:\e-books\Telerik\2012_2013\KPK\TeemWork\Iron-Team-Battle-Field-2\BattleField\obj\Debug\BattleField.pdb
