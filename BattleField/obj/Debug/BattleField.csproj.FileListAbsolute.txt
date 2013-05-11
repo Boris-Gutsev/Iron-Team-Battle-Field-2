@@ -8,3 +8,6 @@ D:\e-books\Telerik\2012_2013\KPK\TeemWork\Iron-Team-Battle-Field-2\BattleField\o
 C:\Users\Hristian\Documents\GitHub\Iron-Team-Battle-Field-2\BattleField\bin\Debug\BattleField.exe.config
 C:\Users\Hristian\Documents\GitHub\Iron-Team-Battle-Field-2\BattleField\obj\Debug\BattleField.exe
 C:\Users\Hristian\Documents\GitHub\Iron-Team-Battle-Field-2\BattleField\obj\Debug\BattleField.pdb
+D:\telerik\05.GitHub\Iron-Team-Battle-Field-2\BattleField\bin\Debug\BattleField.exe.config
+D:\telerik\05.GitHub\Iron-Team-Battle-Field-2\BattleField\obj\Debug\BattleField.exe
+D:\telerik\05.GitHub\Iron-Team-Battle-Field-2\BattleField\obj\Debug\BattleField.pdb
