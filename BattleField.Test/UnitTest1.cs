@@ -38,6 +38,11 @@ namespace BattleField.Test
         }
 
          [TestMethod]
+         public void TestMethod8()
+         {
+         }
+
+         [TestMethod]
          public void TestMethod300()
          {
          }
