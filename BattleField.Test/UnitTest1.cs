@@ -15,5 +15,10 @@ namespace BattleField.Test
         public void TestMethod2()
         {
         }
+
+        [TestMethod]
+        public void TestMethod6()
+        {
+        }
     }
 }
