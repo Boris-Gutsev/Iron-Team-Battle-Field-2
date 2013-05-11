@@ -18,49 +18,52 @@ namespace BattleField
         {
             int fieldSize = InputFielsSize();
 
-            BattleFieldFramefork bf = new BattleFieldFramefork(fieldSize);
-            bf.InitField();
-            bf.InitMines();
-            bf.DisplayField();
-
-           
-            int coordX = 0;
-            int coordY = 0;
-
+            BattleFieldFramefork battleField = new BattleFieldFramefork(fieldSize);
+            battleField.InitField();
+            battleField.InitMines();
+            battleField.DisplayField();          
+            
             do
             {
-                bool isInField = true;
-                bool isEmptyCell = false;
-                do
-                {
-                    //TODO: do try parse, correct parse
-                    Console.Write("Enter coordinates: ");
-                    string coordinates = Console.ReadLine();
-                    coordX = Convert.ToInt32(coordinates.Substring(0, 1));
-                    coordY = Convert.ToInt32(coordinates.Substring(2));
+                FieldCoordinates fieldCoordinates = InputFieldCoordinates(battleField);
 
-                    isInField = (coordX >= MIN_BORDER) && (coordX <= fieldSize - 1) && 
-                        (coordY >= MIN_BORDER) && (coordY <= fieldSize - 1);
-                    if (isInField)
-                    {
-                        isEmptyCell = (bf.Pozicii[coordX, coordY] == EMPTY_CELL);
-                    }
-                   
-                    if (!isInField || isEmptyCell)
-                    {
-                        Console.WriteLine("Invalid Move");
-                    }
-                }
-                while (!isInField || isEmptyCell);
-
-                bf.DetonateMine(coordX, coordY);
-                bf.DisplayField();
-                bf.DetonatedMines++;
+                battleField.DetonateMine(fieldCoordinates.row, fieldCoordinates.col);
+                battleField.DisplayField();
+                battleField.DetonatedMines++;
             }
-            while (bf.PrebroiOstavashtiteMinichki() != 0);
+            while (battleField.PrebroiOstavashtiteMinichki() != 0);
 
-            Console.WriteLine("Game Over. Detonated Mines: " + bf.DetonatedMines);
+            Console.WriteLine("Game Over. Detonated Mines: " + battleField.DetonatedMines);
             Console.ReadKey();
+        }
+
+        private static FieldCoordinates InputFieldCoordinates(BattleFieldFramefork battleField)
+        {
+            FieldCoordinates fieldCoordinates = new FieldCoordinates();
+            bool isInField = true;
+            bool isEmptyCell = false;
+            do
+            {
+                //TODO: do try parse, correct parse
+                Console.Write("Enter coordinates: ");
+                string coordinates = Console.ReadLine();
+                fieldCoordinates.row = Convert.ToInt32(coordinates.Substring(0, 1));
+                fieldCoordinates.col = Convert.ToInt32(coordinates.Substring(2));
+
+                isInField = (fieldCoordinates.row >= MIN_BORDER) && (fieldCoordinates.row <= battleField.FieldSize -1) &&
+                            (fieldCoordinates.col >= MIN_BORDER) && (fieldCoordinates.col <= battleField.FieldSize - 1);
+                if (isInField)
+                {
+                    isEmptyCell = (battleField.Pozicii[fieldCoordinates.row, fieldCoordinates.col] == EMPTY_CELL);
+                }
+                     
+                if (!isInField || isEmptyCell)
+                {
+                    Console.WriteLine("Invalid Move");
+                }
+            }
+            while (!isInField || isEmptyCell);
+            return fieldCoordinates;
         }
   
         private static int InputFielsSize()
