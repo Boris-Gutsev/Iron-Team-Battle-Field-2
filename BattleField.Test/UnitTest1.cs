@@ -22,13 +22,17 @@ namespace BattleField.Test
         }
 
         [TestMethod]
+
         public void TestMethod5()
         {
         }
-    }
 
         [TestMethod]
         public void TestMethod6()
+        {
+        }
+
+        public void TestMethod7()
         {
         }
     }

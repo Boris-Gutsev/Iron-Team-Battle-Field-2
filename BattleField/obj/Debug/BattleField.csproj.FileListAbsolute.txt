@@ -11,3 +11,6 @@ C:\Users\Hristian\Documents\GitHub\Iron-Team-Battle-Field-2\BattleField\obj\Debu
 D:\telerik\05.GitHub\Iron-Team-Battle-Field-2\BattleField\bin\Debug\BattleField.exe.config
 D:\telerik\05.GitHub\Iron-Team-Battle-Field-2\BattleField\obj\Debug\BattleField.exe
 D:\telerik\05.GitHub\Iron-Team-Battle-Field-2\BattleField\obj\Debug\BattleField.pdb
+C:\Users\Hristian\Documents\GitHub\Iron-Team-Battle-Field-2\BattleField\bin\Debug\BattleField.exe
+C:\Users\Hristian\Documents\GitHub\Iron-Team-Battle-Field-2\BattleField\bin\Debug\BattleField.pdb
+C:\Users\Hristian\Documents\GitHub\Iron-Team-Battle-Field-2\BattleField\obj\Debug\BattleField.csprojResolveAssemblyReference.cache
