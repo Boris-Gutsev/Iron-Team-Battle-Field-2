@@ -15,7 +15,7 @@ namespace BattleField
           this.DetonatedMines = 0;
       }
 
-      #region propertie 
+      #region properties
         public int DetonatedMines
         {
             get
@@ -44,11 +44,16 @@ namespace BattleField
         {
             get
             {
-                return fieldSize;
+                return this.fieldSize;
             }
             private set
             {
-                fieldSize = value;
+                if (value <= 0) // TODO
+                {
+                    throw new ArgumentException("Fieldsize cannot be negative or zero");
+                }
+
+                this.fieldSize = value;
             }
         }
 
@@ -60,7 +65,7 @@ namespace BattleField
          {
             for (int j = 0; j < fieldSize; j++)
             {
-               this.pozicii[i, j] = " - ";
+               this.Pozicii[i, j] = " - ";
             }
          }
       }
