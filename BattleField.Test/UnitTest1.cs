@@ -26,6 +26,10 @@ namespace BattleField.Test
         public void TestMethod5()
         {
         }
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 1fdf0c6ca91caaabe3d5b39b806a79755b4fdbde
 
         [TestMethod]
         public void TestMethod6()
