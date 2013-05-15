@@ -31,7 +31,7 @@ namespace BattleField
                 battleField.DisplayField();
                 battleField.DetonatedMines++;
             }
-            while (battleField.PrebroiOstavashtiteMinichki() != 0);
+            while (battleField.CountRemainingMines() != 0);
 
             Console.WriteLine("Game Over. Detonated Mines: " + battleField.DetonatedMines);
             Console.ReadKey();

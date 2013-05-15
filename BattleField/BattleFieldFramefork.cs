@@ -4,6 +4,8 @@ namespace BattleField
 {
    public class BattleFieldFramefork
    {
+      private const string EXPLOSION_MARK = " X ";
+
       private int fieldSize;
       private int detonatedMines;
       private string[,] positions;
@@ -61,11 +63,11 @@ namespace BattleField
 
       public void InitField()
         {
-         for (int i = 0; i < fieldSize; i++)
+         for (int row = 0; row < fieldSize; row++)
          {
-            for (int j = 0; j < fieldSize; j++)
+            for (int col = 0; col < fieldSize; col++)
             {
-               this.Positions[i, j] = " - ";
+               this.Positions[row, col] = " - ";
             }
          }
       }
@@ -78,18 +80,19 @@ namespace BattleField
          {
             Console.Write(" " + i.ToString() + "  ");
          }
-         Console.WriteLine("");
+         Console.WriteLine(string.Empty);
 
          Console.Write("    ");
          for (int i = 0; i < 4 * fieldSize - 3; i++)
          {
             Console.Write("-");
          }
-         Console.WriteLine("");
+
+         Console.WriteLine(string.Empty);
          //top side numbers
 
 
-         Console.WriteLine("");
+         Console.WriteLine(string.Empty);
 
          for (int i = 0; i < fieldSize; i++)
          {
@@ -99,11 +102,15 @@ namespace BattleField
             {
                Console.Write(" " + this.positions[i, j].ToString());
             }
-            Console.WriteLine(""); Console.WriteLine(""); Console.WriteLine("");
+
+            Console.WriteLine(string.Empty);
+            Console.WriteLine(string.Empty);
+            Console.WriteLine(string.Empty);
          }
       }
+
       public void InitMines()
-      {//tuka ne sym siguren kakvo tochno pravq ama pyk raboti
+      {
          int minesDownLimit = Convert.ToInt32(0.15 * fieldSize * fieldSize);
          int minesUpperLimit = Convert.ToInt32(0.30 * fieldSize * fieldSize);
          int tempMineXCoordinate;
@@ -112,254 +119,121 @@ namespace BattleField
          Random rnd = new Random();
 
          int minesCount = Convert.ToInt32(rnd.Next(minesDownLimit, minesUpperLimit));
-         int[,] minesPositions =
-             
-             new int[minesCount, minesCount];
+         int[,] minesPositions = new int[minesCount, minesCount];
          Console.WriteLine("mines count is: " + minesCount);
 
          for (int i = 0; i < minesCount; i++)
          {
-            do {
-                //tuka cikyla se vyrti dokato flag ne e false
-                //s do-while raboti po dobre
-               tempMineXCoordinate = 
-                   Convert.ToInt32(rnd.Next(0, fieldSize - 1));
-               tempMineYCoordinate = 
-                   Convert.ToInt32(rnd.Next(0, fieldSize - 1));
-               if (this.positions[tempMineXCoordinate, tempMineYCoordinate] == " - ")
-                   this.positions[tempMineXCoordinate, tempMineYCoordinate] = 
-                      " " + Convert.ToString(rnd.Next(1, 6) + " ");
-               else
-                  flag = false;
-            } while (flag);
+             do
+             {
+                 tempMineXCoordinate = Convert.ToInt32(rnd.Next(0, this.fieldSize - 1));
+                 tempMineYCoordinate = Convert.ToInt32(rnd.Next(0, this.fieldSize - 1));
+                 if (this.positions[tempMineXCoordinate, tempMineYCoordinate] == " - ")
+                 {
+                     this.positions[tempMineXCoordinate, tempMineYCoordinate] = " "
+                                                                                + Convert.ToString(rnd.Next(1, 6) + " ");
+                 }
+                 else
+                 {
+                     flag = false;
+                 }
+             }
+             while (flag);
          }
       }
 
-      //tuka sa mogyshtite metodi za gyrmejite
-
-      public void DetonateMine1(int XCoord, int YCoord)
+      public void DetonateMine(int positionX, int positionY)
       {
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord - 1, YCoord - 1] = " X ";
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord - 1, YCoord + 1] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord + 1, YCoord - 1] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord + 1, YCoord + 1] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord, YCoord] = " X ";
+          byte power = Convert.ToByte(this.positions[positionX, positionY]);
+
+          // if the power is > 1 explosions continue 
+          // till they match condition for example power == 2/3/4
+
+          // exploding cell when power is 1
+          this.Explode(positionX, positionY);
+          this.Explode(positionX - 1, positionY - 1);
+          this.Explode(positionX - 1, positionY + 1);
+          this.Explode(positionX + 1, positionY - 1);
+          this.Explode(positionX + 1, positionY + 1);
+
+          if (power == 1)
+          {
+              return;
+          }
+
+          // exploding cell when power is 2
+          this.Explode(positionX, positionY - 1);
+          this.Explode(positionX - 1, positionY);
+          this.Explode(positionX + 1, positionY);
+          this.Explode(positionX, positionY + 1);
+
+          if (power == 2)
+          {
+              return;
+          }
+
+          // exploding cell when power is 3
+          this.Explode(positionX - 2, positionY);
+          this.Explode(positionX + 2, positionY);
+          this.Explode(positionX, positionY - 2);
+          this.Explode(positionX, positionY + 2);
+
+          if (power == 3)
+          {
+              return;
+          }
+
+          // exploding cell when power is 4
+          this.Explode(positionX - 1, positionY + 2);
+          this.Explode(positionX + 1, positionY + 2);
+          this.Explode(positionX - 1, positionY - 2);
+          this.Explode(positionX + 1, positionY - 2);
+          this.Explode(positionX - 2, positionY - 1);
+          this.Explode(positionX - 2, positionY + 1);
+          this.Explode(positionX + 2, positionY - 1);
+          this.Explode(positionX + 2, positionY + 1);
+
+          if (power == 4)
+          {
+              return;
+          }
+
+          // exploding cell when power is 5
+          this.Explode(positionX - 2, positionY - 2);
+          this.Explode(positionX + 2, positionY - 2);
+          this.Explode(positionX - 2, positionY + 2);
+          this.Explode(positionX + 2, positionY + 2);
       }
 
-      public void DetonateMine2(int XCoord, int YCoord)
-      {
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord - 1, YCoord - 1] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord, YCoord - 1] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord + 1, YCoord - 1] = " X ";
-
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord - 1, YCoord] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord, YCoord] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord + 1, YCoord] = " X ";
-
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord - 1, YCoord + 1] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord, YCoord + 1] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord + 1, YCoord + 1] = " X ";
-      }
-
-      public void DetonateMine3(int XCoord, int YCoord)
-      {
-         if ((XCoord - 2 >= 0) && (XCoord - 2 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord - 2, YCoord] = " X ";
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord - 1, YCoord] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord, YCoord] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord + 1, YCoord] = " X ";
-         if ((XCoord + 2 >= 0) && (XCoord + 2 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord + 2, YCoord] = " X ";
-
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord - 1, YCoord - 1] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord, YCoord] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord + 1, YCoord + 1] = " X ";
-
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord - 1, YCoord + 1] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord, YCoord] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord + 1, YCoord - 1] = " X ";
-
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord - 2 >= 0) && (YCoord - 2 < fieldSize))
-             this.positions[XCoord, YCoord - 2] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord, YCoord - 1] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord, YCoord] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord, YCoord + 1] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord + 2 >= 0) && (YCoord + 2 < fieldSize))
-             this.positions[XCoord, YCoord + 2] = " X ";
-      }
-
-      public void DetonateMine4(int XCoord, int YCoord)
-      {
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord - 1, YCoord - 1] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord, YCoord - 1] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord + 1, YCoord - 1] = " X ";
-
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord - 1, YCoord] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord, YCoord] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord + 1, YCoord] = " X ";
-
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord - 1, YCoord + 1] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord, YCoord + 1] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord + 1, YCoord + 1] = " X ";
-
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord + 2 >= 0) && (YCoord + 2 < fieldSize))
-             this.positions[XCoord - 1, YCoord + 2] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord + 2 >= 0) && (YCoord + 2 < fieldSize))
-             this.positions[XCoord, YCoord + 2] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord + 2 >= 0) && (YCoord + 2 < fieldSize))
-             this.positions[XCoord + 1, YCoord + 2] = " X ";
-
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord - 2 >= 0) && (YCoord - 2 < fieldSize))
-             this.positions[XCoord - 1, YCoord - 2] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord - 2 >= 0) && (YCoord - 2 < fieldSize))
-             this.positions[XCoord, YCoord - 2] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord - 2 >= 0) && (YCoord - 2 < fieldSize))
-             this.positions[XCoord + 1, YCoord - 2] = " X ";
-
-         if ((XCoord - 2 >= 0) && (XCoord - 2 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord - 2, YCoord - 1] = " X ";
-         if ((XCoord - 2 >= 0) && (XCoord - 2 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord - 2, YCoord] = " X ";
-         if ((XCoord - 2 >= 0) && (XCoord - 2 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord - 2, YCoord + 1] = " X ";
-
-         if ((XCoord + 2 >= 0) && (XCoord + 2 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord + 2, YCoord - 1] = " X ";
-         if ((XCoord + 2 >= 0) && (XCoord + 2 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord + 2, YCoord] = " X ";
-         if ((XCoord + 2 >= 0) && (XCoord + 2 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord + 2, YCoord + 1] = " X ";
-      }
-
-      public void GrymniPetaBomba(int XCoord, int YCoord)
-      {
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord - 1, YCoord - 1] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord, YCoord - 1] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord + 1, YCoord - 1] = " X ";
-
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord - 1, YCoord] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord, YCoord] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord + 1, YCoord] = " X ";
-
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord - 1, YCoord + 1] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord, YCoord + 1] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord + 1, YCoord + 1] = " X ";
-
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord + 2 >= 0) && (YCoord + 2 < fieldSize))
-             this.positions[XCoord - 1, YCoord + 2] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord + 2 >= 0) && (YCoord + 2 < fieldSize))
-             this.positions[XCoord, YCoord + 2] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord + 2 >= 0) && (YCoord + 2 < fieldSize))
-             this.positions[XCoord + 1, YCoord + 2] = " X ";
-
-         if ((XCoord - 1 >= 0) && (XCoord - 1 < fieldSize) && (YCoord - 2 >= 0) && (YCoord - 2 < fieldSize))
-             this.positions[XCoord - 1, YCoord - 2] = " X ";
-         if ((XCoord >= 0) && (XCoord < fieldSize) && (YCoord - 2 >= 0) && (YCoord - 2 < fieldSize))
-             this.positions[XCoord, YCoord - 2] = " X ";
-         if ((XCoord + 1 >= 0) && (XCoord + 1 < fieldSize) && (YCoord - 2 >= 0) && (YCoord - 2 < fieldSize))
-             this.positions[XCoord + 1, YCoord - 2] = " X ";
-
-         if ((XCoord - 2 >= 0) && (XCoord - 2 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord - 2, YCoord - 1] = " X ";
-         if ((XCoord - 2 >= 0) && (XCoord - 2 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord - 2, YCoord] = " X ";
-         if ((XCoord - 2 >= 0) && (XCoord - 2 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord - 2, YCoord + 1] = " X ";
-
-         if ((XCoord + 2 >= 0) && (XCoord + 2 < fieldSize) && (YCoord - 1 >= 0) && (YCoord - 1 < fieldSize))
-             this.positions[XCoord + 2, YCoord - 1] = " X ";
-         if ((XCoord + 2 >= 0) && (XCoord + 2 < fieldSize) && (YCoord >= 0) && (YCoord < fieldSize))
-             this.positions[XCoord + 2, YCoord] = " X ";
-         if ((XCoord + 2 >= 0) && (XCoord + 2 < fieldSize) && (YCoord + 1 >= 0) && (YCoord + 1 < fieldSize))
-             this.positions[XCoord + 2, YCoord + 1] = " X ";
-
-         if ((XCoord - 2 >= 0) && (XCoord - 2 < fieldSize) && (YCoord - 2 >= 0) && (YCoord - 2 < fieldSize))
-             this.positions[XCoord - 2, YCoord - 2] = " X ";
-         if ((XCoord + 2 >= 0) && (XCoord + 2 < fieldSize) && (YCoord - 2 >= 0) && (YCoord - 2 < fieldSize))
-             this.positions[XCoord + 2, YCoord - 2] = " X ";
-         if ((XCoord - 2 >= 0) && (XCoord - 2 < fieldSize) && (YCoord + 2 >= 0) && (YCoord + 2 < fieldSize))
-             this.positions[XCoord - 2, YCoord + 2] = " X ";
-         if ((XCoord + 2 >= 0) && (XCoord + 2 < fieldSize) && (YCoord + 2 >= 0) && (YCoord + 2 < fieldSize))
-             this.positions[XCoord + 2, YCoord + 2] = " X ";
-      }
-
-
-       //tuka se izbira kva bomba da grymne
-      public void DetonateMine(int XCoord, int YCoord)
-      {
-          switch (Convert.ToInt32(this.positions[XCoord, YCoord]))
-         {
-            case 1: this.DetonateMine1(XCoord, YCoord);
-               break;
-            case 2: this.DetonateMine2(XCoord, YCoord);
-               break;
-            case 3: this.DetonateMine3(XCoord, YCoord);
-               break;
-            case 4: this.DetonateMine4(XCoord, YCoord);
-               break;
-            case 5: this.GrymniPetaBomba(XCoord, YCoord);
-               break;
-         }
-      }
-
-      public int PrebroiOstavashtiteMinichki()
+      public int CountRemainingMines()
       {
          int count = 0;
 
-         for (int i = 0; i < fieldSize; i++)
+         for (int row = 0; row < this.fieldSize; row++)
          {
-            for (int j = 0; i < fieldSize; i++)
+            for (int col = 0; col < this.fieldSize; col++)
             {
-                if ((this.positions[i, j] != " X ") && (this.positions[i, j] != " - "))
-                  count++;
+                if ((this.positions[row, col] != " X ") && (this.positions[row, col] != " - "))
+                {
+                    count++;
+                }
             }
          }
 
          return count;
+      }
+
+      private bool IsValidCoordinate(int point)
+      {
+          return point >= 0 && point < this.fieldSize;
+      }
+
+      private void Explode(int positionX, int positionY)
+      {
+          if (this.IsValidCoordinate(positionX) && this.IsValidCoordinate(positionY))
+          {
+              this.positions[positionX, positionY] = EXPLOSION_MARK;
+          }
       }
    }
 }
