@@ -36,7 +36,7 @@ namespace BattleField.Test
                 { " - ", " - ", " - ", " - " },
                 { " - ", " - ", " - ", " - " }};
 
-            string[,] actual = bf.Pozicii; // TODO
+            string[,] actual = bf.Positions; // TODO
 
             AssertMatrixAreEqual(exprected, actual);
         }

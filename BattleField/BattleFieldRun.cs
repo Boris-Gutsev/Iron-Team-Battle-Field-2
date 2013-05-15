@@ -54,7 +54,7 @@ namespace BattleField
                             (fieldCoordinates.col >= MIN_BORDER) && (fieldCoordinates.col <= battleField.FieldSize - 1);
                 if (isInField)
                 {
-                    isEmptyCell = (battleField.Pozicii[fieldCoordinates.row, fieldCoordinates.col] == EMPTY_CELL);
+                    isEmptyCell = (battleField.Positions[fieldCoordinates.row, fieldCoordinates.col] == EMPTY_CELL);
                 }
                      
                 if (!isInField || isEmptyCell)
