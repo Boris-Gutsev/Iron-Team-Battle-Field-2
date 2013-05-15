@@ -24,6 +24,7 @@ namespace BattleField
             {
                 return this.detonatedMines;
             }
+
             set
             {
                 this.detonatedMines = value;
@@ -36,6 +37,7 @@ namespace BattleField
             {
                 return this.positions;
             }
+
             private set
             {
                 this.positions = value;
@@ -48,9 +50,10 @@ namespace BattleField
             {
                 return this.fieldSize;
             }
+
             private set
             {
-                if (value <= 0) // TODO
+                if (value <= 0) 
                 {
                     throw new ArgumentException("Fieldsize cannot be negative or zero");
                 }
@@ -63,9 +66,9 @@ namespace BattleField
 
       public void InitField()
         {
-         for (int row = 0; row < fieldSize; row++)
+         for (int row = 0; row < this.fieldSize; row++)
          {
-            for (int col = 0; col < fieldSize; col++)
+            for (int col = 0; col < this.fieldSize; col++)
             {
                this.Positions[row, col] = " - ";
             }
@@ -74,31 +77,30 @@ namespace BattleField
 
       public void DisplayField()
       {
-         //top side numbers
+         // top side numbers
          Console.Write("   ");
-         for (int i = 0; i < fieldSize; i++)
+         for (int i = 0; i < this.fieldSize; i++)
          {
             Console.Write(" " + i.ToString() + "  ");
          }
          Console.WriteLine(string.Empty);
 
          Console.Write("    ");
-         for (int i = 0; i < 4 * fieldSize - 3; i++)
+         for (int i = 0; i < 4 * this.fieldSize - 3; i++)
          {
             Console.Write("-");
          }
 
          Console.WriteLine(string.Empty);
-         //top side numbers
-
-
+        
+          // top side numbers
          Console.WriteLine(string.Empty);
 
-         for (int i = 0; i < fieldSize; i++)
+         for (int i = 0; i < this.fieldSize; i++)
          {
-            //left side numbers
+            // left side numbers
             Console.Write(i.ToString() + "|");
-            for (int j = 0; j < fieldSize; j++)
+            for (int j = 0; j < this.fieldSize; j++)
             {
                Console.Write(" " + this.positions[i, j].ToString());
             }
@@ -111,14 +113,14 @@ namespace BattleField
 
       public void InitMines()
       {
-         int minesDownLimit = Convert.ToInt32(0.15 * fieldSize * fieldSize);
-         int minesUpperLimit = Convert.ToInt32(0.30 * fieldSize * fieldSize);
+         int minesDownLimit = Convert.ToInt32(0.15 * this.fieldSize * this.fieldSize);
+         int minesUpperLimit = Convert.ToInt32(0.30 * this.fieldSize * this.fieldSize);
          int tempMineXCoordinate;
          int tempMineYCoordinate;
          bool flag = true;
-         Random rnd = new Random();
+         Random rand = new Random();
 
-         int minesCount = Convert.ToInt32(rnd.Next(minesDownLimit, minesUpperLimit));
+         int minesCount = Convert.ToInt32(rand.Next(minesDownLimit, minesUpperLimit));
          int[,] minesPositions = new int[minesCount, minesCount];
          Console.WriteLine("mines count is: " + minesCount);
 
@@ -126,12 +128,12 @@ namespace BattleField
          {
              do
              {
-                 tempMineXCoordinate = Convert.ToInt32(rnd.Next(0, this.fieldSize - 1));
-                 tempMineYCoordinate = Convert.ToInt32(rnd.Next(0, this.fieldSize - 1));
+                 tempMineXCoordinate = Convert.ToInt32(rand.Next(0, this.fieldSize - 1));
+                 tempMineYCoordinate = Convert.ToInt32(rand.Next(0, this.fieldSize - 1));
                  if (this.positions[tempMineXCoordinate, tempMineYCoordinate] == " - ")
                  {
                      this.positions[tempMineXCoordinate, tempMineYCoordinate] = " "
-                                                                                + Convert.ToString(rnd.Next(1, 6) + " ");
+                                                                                + Convert.ToString(rand.Next(1, 6) + " ");
                  }
                  else
                  {

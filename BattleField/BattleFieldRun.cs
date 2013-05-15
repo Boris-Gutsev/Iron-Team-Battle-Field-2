@@ -40,21 +40,22 @@ namespace BattleField
         private static FieldCoordinates InputFieldCoordinates(BattleFieldFramefork battleField)
         {
             FieldCoordinates fieldCoordinates = new FieldCoordinates();
-            bool isInField = true;
+            bool isInField;
             bool isEmptyCell = false;
             do
             {
                 //TODO: do try parse, correct parse
                 Console.Write("Enter coordinates: ");
-                string coordinates = Console.ReadLine();
+                string coordinates = Console.ReadLine(); //TODO: Possible issue empty string followed by a number
                 fieldCoordinates.row = Convert.ToInt32(coordinates.Substring(0, 1));
                 fieldCoordinates.col = Convert.ToInt32(coordinates.Substring(2));
 
-                isInField = (fieldCoordinates.row >= MIN_BORDER) && (fieldCoordinates.row <= battleField.FieldSize -1) &&
-                            (fieldCoordinates.col >= MIN_BORDER) && (fieldCoordinates.col <= battleField.FieldSize - 1);
+                isInField = (fieldCoordinates.row >= MIN_BORDER) && (fieldCoordinates.row <= battleField.FieldSize - 1)
+                            && (fieldCoordinates.col >= MIN_BORDER)
+                            && (fieldCoordinates.col <= battleField.FieldSize - 1);
                 if (isInField)
                 {
-                    isEmptyCell = (battleField.Positions[fieldCoordinates.row, fieldCoordinates.col] == EMPTY_CELL);
+                    isEmptyCell = battleField.Positions[fieldCoordinates.row, fieldCoordinates.col] == EMPTY_CELL;
                 }
                      
                 if (!isInField || isEmptyCell)
@@ -69,15 +70,13 @@ namespace BattleField
         private static int InputFielsSize()
         {
             int fieldSize;
-            string fieldSizeStr;
-            bool isInputSizeParseCorrect = false;
             bool isFieldSizeCorrect = false;
             Console.WriteLine("Welcome to the Battle Field game");
             do
             {
                 Console.Write("Enter legal size of board: ");
-                fieldSizeStr = Console.ReadLine();
-                isInputSizeParseCorrect = Int32.TryParse(fieldSizeStr, out fieldSize);
+                string fieldSizeStr = Console.ReadLine();
+                bool isInputSizeParseCorrect = int.TryParse(fieldSizeStr, out fieldSize);
                 if (isInputSizeParseCorrect)
                 {
                     isFieldSizeCorrect = (fieldSize > MIN_FIELD_SIZE) && (fieldSize < MAX_FIELD_SIZE);

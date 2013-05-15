@@ -30,15 +30,15 @@ namespace BattleField.Test
             BattleFieldFramefork bf = new BattleFieldFramefork(4);
             bf.InitField();
 
-            string[,] exprected = {
-                { " - ", " - ", " - ", " - " },
-                { " - ", " - ", " - ", " - " },
-                { " - ", " - ", " - ", " - " },
-                { " - ", " - ", " - ", " - " }};
+            string[,] exprected =
+                {
+                    { " - ", " - ", " - ", " - " }, { " - ", " - ", " - ", " - " },
+                    { " - ", " - ", " - ", " - " }, { " - ", " - ", " - ", " - " }
+                };
 
             string[,] actual = bf.Positions; // TODO
 
-            AssertMatrixAreEqual(exprected, actual);
+            this.AssertMatrixAreEqual(exprected, actual);
         }
 
         private void AssertMatrixAreEqual(string[,] expectedMatrix, string[,] actualMatrix)
