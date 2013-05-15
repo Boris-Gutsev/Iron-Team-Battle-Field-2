@@ -10,16 +10,16 @@ namespace BattleField.Test
         [ExpectedException(typeof(ArgumentException))]
         public void BattleFieldFrameforkConstructorNegativeTest()
         {
-            BattleFieldFramefork bf = new BattleFieldFramefork(0);
+            BattleFieldFramefork battleField = new BattleFieldFramefork(0);
         }
 
         [TestMethod]
         public void BattleFieldFrameforkConstructorNormalTest()
         {
-            BattleFieldFramefork bf = new BattleFieldFramefork(4);
+            BattleFieldFramefork battleField = new BattleFieldFramefork(4);
 
             int exprected = 4;
-            int actual = bf.FieldSize;
+            int actual = battleField.FieldSize;
             Assert.AreEqual(exprected, actual);
         }
 
@@ -27,8 +27,8 @@ namespace BattleField.Test
         [TestMethod]
         public void BattleFieldFrameforkInitFieldTest()
         {
-            BattleFieldFramefork bf = new BattleFieldFramefork(4);
-            bf.InitField();
+            BattleFieldFramefork battleField = new BattleFieldFramefork(4);
+            battleField.InitField();
 
             string[,] exprected = {
                 { " - ", " - ", " - ", " - " },
@@ -36,7 +36,7 @@ namespace BattleField.Test
                 { " - ", " - ", " - ", " - " },
                 { " - ", " - ", " - ", " - " }};
 
-            string[,] actual = bf.Positions; // TODO
+            string[,] actual = battleField.Positions; // TODO
 
             AssertMatrixAreEqual(exprected, actual);
         }
