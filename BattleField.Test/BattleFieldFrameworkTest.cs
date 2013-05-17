@@ -18,6 +18,7 @@ namespace BattleField.Test
     [TestClass]
     public class BattleFieldFrameworkTest
     {
+        //shit
         #region Constructor
 
         /// <summary>
