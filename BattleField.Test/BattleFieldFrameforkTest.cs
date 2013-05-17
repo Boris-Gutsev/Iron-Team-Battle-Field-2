@@ -170,8 +170,8 @@ namespace BattleField.Test
             BattleFieldFramefork bf = new BattleFieldFramefork(1);
             Random randomGenerator = new Random(123);
             int numberOfMines = bf.GetNumberOfMines(randomGenerator);
-            string[,] playgraund = bf.InitMines(randomGenerator, numberOfMines);
-            string[,] actual = bf.DetonateMine(playgraund, 0, 0);
+            string[,] playGround = bf.InitMines(randomGenerator, numberOfMines);
+            string[,] actual = bf.DetonateMine(playGround, 0, 0);
 
             string[,] exprected = {
                                     { " X " },                                    
@@ -185,8 +185,8 @@ namespace BattleField.Test
             BattleFieldFramefork bf = new BattleFieldFramefork(5);
             Random randomGenerator = new Random(123);
             int numberOfMines = bf.GetNumberOfMines(randomGenerator);
-            string[,] playgraund = bf.InitMines(randomGenerator, numberOfMines);
-            string[,] actual = bf.DetonateMine(playgraund, 2, 1);
+            string[,] playGround = bf.InitMines(randomGenerator, numberOfMines);
+            string[,] actual = bf.DetonateMine(playGround, 2, 1);
 
             string[,] exprected = {
                                     { " 4 "," - "," - "," - "," - "},
@@ -204,8 +204,8 @@ namespace BattleField.Test
             BattleFieldFramefork bf = new BattleFieldFramefork(5);
             Random randomGenerator = new Random(123);
             int numberOfMines = bf.GetNumberOfMines(randomGenerator);
-            string[,] playgraund = bf.InitMines(randomGenerator, numberOfMines);
-            string[,] first = bf.DetonateMine(playgraund, 2, 1);
+            string[,] playGround = bf.InitMines(randomGenerator, numberOfMines);
+            string[,] first = bf.DetonateMine(playGround, 2, 1);
             string[,] actual = bf.DetonateMine(first, 4, 3);
 
             string[,] exprected = {
@@ -219,13 +219,13 @@ namespace BattleField.Test
         }
 
         [TestMethod]
-        public void BattleFieldFrameworkDetonateSize5Mine4After1and5()
+        public void BattleFieldFrameworkDetonateSize5Mine4After1And5()
         {
             BattleFieldFramefork bf = new BattleFieldFramefork(5);
             Random randomGenerator = new Random(123);
             int numberOfMines = bf.GetNumberOfMines(randomGenerator);
-            string[,] playgraund = bf.InitMines(randomGenerator, numberOfMines);
-            string[,] first = bf.DetonateMine(playgraund, 2, 1);
+            string[,] playGround = bf.InitMines(randomGenerator, numberOfMines);
+            string[,] first = bf.DetonateMine(playGround, 2, 1);
             string[,] second = bf.DetonateMine(first, 4, 3);
             string[,] actual = bf.DetonateMine(second, 0, 0);
 
@@ -240,16 +240,16 @@ namespace BattleField.Test
         }
 
         [TestMethod]
-        public void BattleFieldFrameworkDetonateSize5Mine1After1and5and4()
+        public void BattleFieldFrameworkDetonateSize5Mine1After1And5And4()
         {
             BattleFieldFramefork bf = new BattleFieldFramefork(5);
             Random randomGenerator = new Random(123);
             int numberOfMines = bf.GetNumberOfMines(randomGenerator);
-            string[,] playgraund = bf.InitMines(randomGenerator, numberOfMines);
-            string[,] first = bf.DetonateMine(playgraund, 2, 1);
+            string[,] playGround = bf.InitMines(randomGenerator, numberOfMines);
+            string[,] first = bf.DetonateMine(playGround, 2, 1);
             string[,] second = bf.DetonateMine(first, 4, 3);
-            string[,] thread = bf.DetonateMine(second, 0, 0);
-            string[,] actual = bf.DetonateMine(thread, 4, 0);
+            string[,] third = bf.DetonateMine(second, 0, 0);
+            string[,] actual = bf.DetonateMine(third, 4, 0);
 
             string[,] exprected = {
                                     { " X "," X "," X "," - "," - "},
@@ -267,11 +267,11 @@ namespace BattleField.Test
             BattleFieldFramefork bf = new BattleFieldFramefork(5);
             Random randomGenerator = new Random(123);
             int numberOfMines = bf.GetNumberOfMines(randomGenerator);
-            string[,] playgraund = bf.InitMines(randomGenerator, numberOfMines);
-            string[,] first = bf.DetonateMine(playgraund, 2, 1);
+            string[,] playGround = bf.InitMines(randomGenerator, numberOfMines);
+            string[,] first = bf.DetonateMine(playGround, 2, 1);
             string[,] second = bf.DetonateMine(first, 4, 3);
-            string[,] thread = bf.DetonateMine(second, 0, 0);
-            string[,] actual = bf.DetonateMine(thread, 4, 0);
+            string[,] third = bf.DetonateMine(second, 0, 0);
+            string[,] actual = bf.DetonateMine(third, 4, 0);
 
             string[,] exprected = {
                                     { " X "," X "," X "," - "," - "},
@@ -280,8 +280,8 @@ namespace BattleField.Test
                                     { " X "," X "," X "," X "," X "},
                                     { " X "," X "," X "," X "," X "},                              
                                   };
-            AssertMatrixAreEqual(exprected, actual);          
-            Assert.AreEqual(0, bf.PrebroiOstavashtiteMinichki());
+            AssertMatrixAreEqual(exprected, actual);
+            Assert.AreEqual(0, bf.CountRemainingMines());
         }
 
         [TestMethod]
@@ -290,8 +290,8 @@ namespace BattleField.Test
             BattleFieldFramefork bf = new BattleFieldFramefork(10);
             Random randomGenerator = new Random(256);
             int numberOfMines = bf.GetNumberOfMines(randomGenerator);
-            string[,] playgraund = bf.InitMines(randomGenerator, numberOfMines);
-            string[,] actual = bf.DetonateMine(playgraund, 6, 2);
+            string[,] playGround = bf.InitMines(randomGenerator, numberOfMines);
+            string[,] actual = bf.DetonateMine(playGround, 6, 2);
 
             string[,] exprected = {
                                     { " 2 "," - "," - "," - "," - "," 3 "," - "," - "," 1 "," - "},
@@ -308,8 +308,6 @@ namespace BattleField.Test
             AssertMatrixAreEqual(exprected, actual);
         }
         #endregion
-
-
 
         private void AssertMatrixAreEqual(string[,] expectedMatrix, string[,] actualMatrix)
         {

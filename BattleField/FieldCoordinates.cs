@@ -10,7 +10,7 @@
 namespace BattleField
 {
     /// <summary>
-    /// The field coordinates.
+    /// Field coordinates.
     /// </summary>
     public struct FieldCoordinates
     {
@@ -19,12 +19,12 @@ namespace BattleField
         /// <summary>
         /// The col.
         /// </summary>
-        public int col;
+        public int Col;
 
         /// <summary>
         /// The row.
         /// </summary>
-        public int row;
+        public int Row;
 
         #endregion
     }

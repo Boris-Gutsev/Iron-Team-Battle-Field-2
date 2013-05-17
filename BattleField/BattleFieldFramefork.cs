@@ -51,7 +51,7 @@ namespace BattleField
             }
             private set
             {
-                if (value <= 0) // TODO
+                if (value <= 0)
                 {
                     throw new ArgumentException("Fieldsize cannot be negative or zero");
                 }
@@ -75,7 +75,7 @@ namespace BattleField
             return matrix;
         }
         
-        public void DisplayPlaygraund()
+        public void DisplayPlayground()
         {
             //top side numbers
             Console.Write("   ");
@@ -197,43 +197,45 @@ namespace BattleField
             return detonateMatrix;
         }
         
-        public string[,] DetonateMine(string[,] currentPlaygraund, int XCoord, int YCoord)
+        public string[,] DetonateMine(string[,] currentPlayground, int xCoord, int yCoord)
         {
-            int minesType = Convert.ToInt32(currentPlaygraund[XCoord, YCoord]);
-            string[,] detonatePlaygraund = currentPlaygraund;
+            int minesType = int.Parse(currentPlayground[xCoord, yCoord]);
+            string[,] detonatePlayground = currentPlayground;
             switch (minesType)
             {
                 case 1:
-                    detonatePlaygraund = this.DetonateMine1(currentPlaygraund,XCoord, YCoord);
+                    detonatePlayground = this.DetonateMine1(currentPlayground,xCoord, yCoord);
                     break;
                 case 2:
-                    detonatePlaygraund = this.DetonateMine2(currentPlaygraund, XCoord, YCoord);
+                    detonatePlayground = this.DetonateMine2(currentPlayground, xCoord, yCoord);
                     break;
                 case 3:
-                    detonatePlaygraund = this.DetonateMine3(currentPlaygraund, XCoord, YCoord);
+                    detonatePlayground = this.DetonateMine3(currentPlayground, xCoord, yCoord);
                     break;
                 case 4:
-                    detonatePlaygraund = this.DetonateMine4(currentPlaygraund, XCoord, YCoord);
+                    detonatePlayground = this.DetonateMine4(currentPlayground, xCoord, yCoord);
                     break;
                 case 5:
-                    detonatePlaygraund = this.DetonateMine5(currentPlaygraund,XCoord, YCoord);
+                    detonatePlayground = this.DetonateMine5(currentPlayground,xCoord, yCoord);
                     break;
                 default:
-                    throw new ArgumentException("Mines type are 1 - 5. You try open " + minesType);
+                    throw new ArgumentException("Mines type are 1 - 5. You tried to open " + minesType);
             }
-            return detonatePlaygraund;
+            return detonatePlayground;
         }
         
-        public int PrebroiOstavashtiteMinichki()
+        public int CountRemainingMines()
         {
             int count = 0;
             
-            for (int i = 0; i < fieldSize; i++)
+            for (int row = 0; row < fieldSize; row++)
             {
-                for (int j = 0; i < fieldSize; i++)
+                for (int col = 0; col < fieldSize; col++)
                 {
-                    if ((this.playground[i, j] != " X ") && (this.playground[i, j] != " - "))
+                    if ((this.playground[row, col] != " X ") && (this.playground[row, col] != " - "))
+                    {
                         count++;
+                    }
                 }
             }
             
