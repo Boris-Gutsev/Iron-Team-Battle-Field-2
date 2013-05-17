@@ -48,7 +48,7 @@ namespace BattleField
         {
             int fieldSize = InputFielsSize();
 
-            var battleField = new BattleFieldFramework(fieldSize);
+            BattleFieldFramework battleField = new BattleFieldFramework(fieldSize);
 
             int numberOfMines = battleField.InitializationPlaygroundMines();
             Console.WriteLine("Mines count: {0}\n", numberOfMines);

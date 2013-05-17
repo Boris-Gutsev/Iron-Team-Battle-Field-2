@@ -37,9 +37,14 @@ namespace BattleField
         /// </summary>
         private string[,] playground;
 
+        /// <summary>
+        /// Detonated Mines.
+        /// </summary>
+        private int detonatedMines;
+
         #endregion
 
-        #region Constructors and Destructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BattleFieldFramework"/> class.
@@ -61,7 +66,19 @@ namespace BattleField
         /// <summary>
         /// Gets or sets the detonated mines.
         /// </summary>
-        public int DetonatedMines { get; set; }
+        /// 
+        public int DetonatedMines
+        {
+            get
+            {
+                return this.detonatedMines;
+            }
+
+            set
+            {
+                this.detonatedMines = value;
+            }
+        }
 
         /// <summary>
         /// Gets the field size.
