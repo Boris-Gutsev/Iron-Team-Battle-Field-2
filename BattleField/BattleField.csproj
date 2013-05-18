@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BattleFieldRun.cs" />
-    <Compile Include="BattleFieldFramefork.cs" />
+    <Compile Include="BattleFieldFramework.cs" />
     <Compile Include="FieldCoordinates.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

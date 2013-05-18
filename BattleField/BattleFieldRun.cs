@@ -1,34 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="BattleFieldRun.cs" company="Telerik">
+//   
+// </copyright>
+// <summary>
+//   The battle field run.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 
 namespace BattleField
 {
-    class BattleFieldRun
+    using System;
+
+    /// <summary>
+    /// The battle field run.
+    /// </summary>
+    internal class BattleFieldRun
     {
+        #region constants
+
+        /// <summary>
+        ///  The minimum field size
+        /// </summary>
         public static readonly int MIN_FIELD_SIZE = 0;
+
+        /// <summary>
+        /// The maximum field size
+        /// </summary>
         public static readonly int MAX_FIELD_SIZE = 11;
 
+        /// <summary>
+        ///  border minimum
+        /// </summary>
         public static readonly int MIN_BORDER = 0;
+
+        /// <summary>
+        ///  empty cell sign
+        /// </summary>
         public static readonly string EMPTY_CELL = " - ";
 
-        public static void Main(string[] args)
+        #endregion
+
+        /// <summary>
+        ///  The entry method
+        /// </summary>
+        public static void Main()
         {
             int fieldSize = InputFielsSize();
 
-            BattleFieldFramefork battleField = new BattleFieldFramefork(fieldSize);
+            var battleField = new BattleFieldFramework(fieldSize);
 
             int numberOfMines = battleField.InitializationPlaygroundMines();
             Console.WriteLine("Mines count: {0}\n", numberOfMines);
             battleField.DisplayPlayground();
-            
+
             do
             {
                 FieldCoordinates fieldCoordinates = InputFieldCoordinates(battleField);
 
-                battleField.Playground = battleField.DetonateMine(battleField.Playground, fieldCoordinates.Row, fieldCoordinates.Col);
+                battleField.Playground = battleField.DetonateMine(
+                    battleField.Playground, fieldCoordinates.Row, fieldCoordinates.Col);
                 battleField.DisplayPlayground();
                 battleField.DetonatedMines++;
             }
@@ -38,7 +69,16 @@ namespace BattleField
             Console.ReadKey();
         }
 
-        private static FieldCoordinates InputFieldCoordinates(BattleFieldFramefork battleField)
+        /// <summary>
+        /// The input field coordinates.
+        /// </summary>
+        /// <param name="battleField">
+        /// The battle field.
+        /// </param>
+        /// <returns>
+        /// The <see cref="FieldCoordinates"/>.
+        /// </returns>
+        private static FieldCoordinates InputFieldCoordinates(BattleFieldFramework battleField)
         {
             FieldCoordinates fieldCoordinates = new FieldCoordinates();
             bool isInField = true;
@@ -48,19 +88,23 @@ namespace BattleField
                 Console.Write("Enter coordinates: ");
 
                 string getMinePosition = Console.ReadLine();
-                string[] coordinates = getMinePosition.Split(new char[] { ' ' },
-                    StringSplitOptions.RemoveEmptyEntries);
+                if (getMinePosition != null)
+                {
+                    string[] coordinates = getMinePosition.Split(
+                        new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                fieldCoordinates.Row = int.Parse(coordinates[0]);
-                fieldCoordinates.Col = int.Parse(coordinates[1]);
+                    fieldCoordinates.Row = int.Parse(coordinates[0]);
+                    fieldCoordinates.Col = int.Parse(coordinates[1]);
+                }
 
-                isInField = (fieldCoordinates.Row >= MIN_BORDER) && (fieldCoordinates.Row <= battleField.FieldSize -1) &&
-                            (fieldCoordinates.Col >= MIN_BORDER) && (fieldCoordinates.Col <= battleField.FieldSize - 1);
+                isInField = (fieldCoordinates.Row >= MIN_BORDER) && (fieldCoordinates.Row <= battleField.FieldSize - 1)
+                            && (fieldCoordinates.Col >= MIN_BORDER)
+                            && (fieldCoordinates.Col <= battleField.FieldSize - 1);
                 if (isInField)
                 {
-                    isEmptyCell = (battleField.Playground[fieldCoordinates.Row, fieldCoordinates.Col] == EMPTY_CELL);
+                    isEmptyCell = battleField.Playground[fieldCoordinates.Row, fieldCoordinates.Col] == EMPTY_CELL;
                 }
-                     
+
                 if (!isInField || isEmptyCell)
                 {
                     Console.WriteLine("Invalid Move");
@@ -69,21 +113,25 @@ namespace BattleField
             while (!isInField || isEmptyCell);
             return fieldCoordinates;
         }
-  
+
+        /// <summary>
+        /// The field size input method
+        /// </summary>
+        /// <returns>
+        /// field size in  <see cref="int"/>.
+        /// </returns>
         private static int InputFielsSize()
         {
             int fieldSize;
-            string fieldSizeStr;
-            bool isInputSizeParseCorrect = false;
             bool isFieldSizeCorrect = false;
 
             Console.WriteLine("Welcome to the Battle Field game");
             do
             {
                 Console.Write("Enter legal size of board: ");
-                fieldSizeStr = Console.ReadLine();
+                string fieldSizeStr = Console.ReadLine();
 
-                isInputSizeParseCorrect = int.TryParse(fieldSizeStr, out fieldSize);
+                bool isInputSizeParseCorrect = int.TryParse(fieldSizeStr, out fieldSize);
                 if (isInputSizeParseCorrect)
                 {
                     isFieldSizeCorrect = (fieldSize > MIN_FIELD_SIZE) && (fieldSize < MAX_FIELD_SIZE);
